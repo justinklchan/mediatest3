@@ -25,15 +25,15 @@ public class MyRecorder extends Thread {
     int minbuffersize;
     String filename;
 
-    public MyRecorder(Activity av,String filename) {
-        int sampleRate = 44100;
-        channels=AudioFormat.CHANNEL_IN_MONO;
+    public MyRecorder(Activity av,String filename, int time) {
+        int sampleRate = 48000;
+        channels=AudioFormat.CHANNEL_IN_STEREO;
         this.filename=filename;
         // Define the channel configuration
         AudioFormat audioFormat = new AudioFormat.Builder()
                 .setSampleRate(sampleRate)
                 .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-                .setChannelIndexMask(0x8)  // Configuring to record from the front microphone
+//                .setChannelIndexMask(0x8)  // /**/Configuring to record from the front microphone
                 .build();
 
         int buffersize = AudioRecord.getMinBufferSize(
@@ -52,7 +52,7 @@ public class MyRecorder extends Thread {
 //            // for ActivityCompat#requestPermissions for more details.
 //            return TODO;
 //        }
-        int arrLength=sampleRate*5;
+        int arrLength=sampleRate*time;
         if (channels == AudioFormat.CHANNEL_IN_MONO) {
             samples = new short[arrLength];
         }
@@ -71,11 +71,18 @@ public class MyRecorder extends Thread {
                 // for ActivityCompat#requestPermissions for more details.
                 return ;
             }
-            rec = new AudioRecord.Builder()
-//                    .setAudioSource(MediaRecorder.AudioSource.MIC)  // Select microphone as the audio source
-                    .setAudioFormat(audioFormat)
-                    .setBufferSizeInBytes(buffersize)
-                    .build();
+//            rec = new AudioRecord.Builder()
+////                    .setAudioSource(MediaRecorder.AudioSource.MIC)  // Select microphone as the audio source
+//                    .setAudioFormat(audioFormat)
+//                    .setBufferSizeInBytes(buffersize)
+//                    .build();
+
+            rec = new AudioRecord(
+                    MediaRecorder.AudioSource.MIC,
+                    sampleRate,
+                    channels,
+                    AudioFormat.ENCODING_PCM_16BIT,
+                    minbuffersize);
         }
         catch(IllegalArgumentException e) {
             Log.e("asdf","");

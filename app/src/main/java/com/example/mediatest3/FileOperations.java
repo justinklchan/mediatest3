@@ -25,7 +25,7 @@ public class FileOperations {
             if (android.os.Build.MODEL.equals("SM-R870")) {
                 dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
             }
-
+            Log.e("asdf",dir);
             writetofile(dir, buff, filename);
 
         } catch(Exception e) {
